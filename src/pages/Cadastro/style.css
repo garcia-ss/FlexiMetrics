@@ -1,0 +1,230 @@
+/* Importa as mesmas animações e estilos base do Home */
+body {
+  position: relative;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+.background-bars {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 10px;
+  padding: 0 20px;
+  overflow: hidden;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.background-bars span {
+  flex: 1;
+  max-width: 200px;
+  height: 100px;
+  min-height: 40%;
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 5px;
+  transform-origin: bottom center;
+  animation: wave 4.7s cubic-bezier(0.61, 0.75, 0.55, 1) infinite alternate;
+  margin-bottom: -90px;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.background-bars span:nth-child(1) { animation-duration: 5.8s; animation-delay: 0.05s; }
+.background-bars span:nth-child(2) { animation-duration: 4.3s; animation-delay: 0.2s; }
+.background-bars span:nth-child(3) { animation-duration: 6.1s; animation-delay: 0.12s; }
+.background-bars span:nth-child(4) { animation-duration: 5.0s; animation-delay: 0.35s; }
+.background-bars span:nth-child(5) { animation-duration: 6.5s; animation-delay: 0.28s; }
+.background-bars span:nth-child(6) { animation-duration: 4.2s; animation-delay: 0.45s; }
+.background-bars span:nth-child(7) { animation-duration: 5.6s; animation-delay: 0.18s; }
+.background-bars span:nth-child(8) { animation-duration: 4.1s; animation-delay: 0.55s; }
+.background-bars span:nth-child(9) { animation-duration: 5.1s; animation-delay: 0.22s; }
+.background-bars span:nth-child(10) { animation-duration: 6.0s; animation-delay: 0.4s; }
+.background-bars span:nth-child(11) { animation-duration: 4.6s; animation-delay: 0.6s; }
+.background-bars span:nth-child(12) { animation-duration: 6.3s; animation-delay: 0.15s; }
+
+@keyframes wave {
+  0% {
+    transform: translateY(0);
+    opacity: 0.65;
+  }
+  20% {
+    transform: translateY(-75px);
+    opacity: 0.8;
+  }
+  40% {
+    transform: translateY(-25px);
+    opacity: 0.55;
+  }
+  60% {
+    transform: translateY(-95px);
+    opacity: 0.9;
+  }
+  80% {
+    transform: translateY(-40px);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(-85px);
+    opacity: 0.95;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .background-bars span {
+    animation: none;
+    opacity: 0.75;
+  }
+}
+
+/* Estilos do Cadastro */
+.cadastro-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+h1 {
+  color: #fff;
+  font-size: 35.2px;
+  margin-bottom: 30px;
+  margin-top: 20px;
+}
+
+h4 {
+  color: #fff;
+  font-size: 15.4px;
+  margin: 15px 0 10px 0;
+  width: 100%;
+}
+
+p {
+  color: #fff;
+  font-size: 13.2px;
+  padding: 0;
+  margin-top: 15px;
+}
+
+p a {
+  color: #8d4a16;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+p a:hover {
+  text-decoration: underline;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16.5px;
+  padding: 33px;
+  padding-top: 55px;;
+  border-radius: 22px;
+  background-color: rgba(179, 108, 32, 0.182);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(212, 208, 208, 0.3);
+  max-width: 100%;
+  width: 495px;
+  margin-bottom: 20px;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="tel"],
+form input[type="password"],
+form input[type="date"] {
+  padding: 11px;
+  background-color: #fff;
+  border: none;
+  border-radius: 22px;
+  width: 100%;
+  outline: none;
+  font-size: 15.4px;
+}
+
+form input[type="text"]::placeholder,
+form input[type="email"]::placeholder,
+form input[type="tel"]::placeholder,
+form input[type="password"]::placeholder {
+  color: #999;
+}
+
+form button {
+  border-radius: 33px;
+  background-color: #ffb74d;
+  height: 44px;
+  border: none;
+  width: 220px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 14px;
+  transition: opacity 0.3s ease;
+  margin-top: 10px;
+}
+
+form button:hover {
+  opacity: 0.8;
+}
+
+form button:active {
+  transform: scale(0.98);
+}
+
+.RadioButtons {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.RadioButtons h4 {
+  margin: 10px 0 8px 0;
+}
+
+.RadioButtons label,
+.RadioButtons span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+form input[type="radio"] {
+  width: 17.6px;
+  height: 17.6px;
+  cursor: pointer;
+  accent-color: #ffb74d;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+  form {
+    width: 90%;
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .background-bars {
+    gap: 5px;
+    padding: 0 10px;
+  }
+
+  .background-bars span {
+    max-width: 150px;
+  }
+}
