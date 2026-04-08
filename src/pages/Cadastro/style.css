@@ -207,6 +207,43 @@ form input[type="radio"] {
   accent-color: #ffb74d;
 }
 
+.error-message {
+  background-color: rgba(220, 53, 69, 0.9);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 14px;
+  width: 100%;
+  max-width: 495px;
+}
+
+.success-message {
+  background-color: rgba(40, 167, 69, 0.9);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 14px;
+  width: 100%;
+  max-width: 495px;
+}
+
+.field-error {
+  color: #ff6b6b;
+  font-size: 12px;
+  margin-top: -10px;
+  width: 100%;
+  text-align: left;
+}
+
+form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 /* Responsivo */
 @media (max-width: 600px) {
   form {

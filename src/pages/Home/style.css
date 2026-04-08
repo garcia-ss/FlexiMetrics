@@ -151,6 +151,21 @@ body {
   }
 }
 
+.error-message {
+  background-color: rgba(220, 53, 69, 0.9);
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 13px;
+  width: 100%;
+  text-align: center;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .background-bars span {
     animation: none;

@@ -1,16 +1,76 @@
-# React + Vite
+# FlexiMetrics
 
-Este template fornece uma configuração mínima para fazer o React funcionar no Vite com HMR e algumas regras do ESLint.
+Sistema de gestão de métricas para personal trainers e professores de educação física.
 
-Atualmente, dois plugins oficiais estão disponíveis:
+## Tecnologias
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) usa [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) usa [SWC](https://swc.rs/)
+- **Frontend**: React 19 + Vite
+- **Estilo**: CSS3
+- **Estado**: Zustand
+- **Backend**: Supabase (Auth + Database)
+- **Roteamento**: React Router v7
 
-## React Compiler
+## Getting Started
 
-O React Compiler não está ativado neste template devido ao seu impacto no desempenho de desenvolvimento e compilação. Para adicioná-lo, consulte [esta documentação](https://react.dev/learn/react-compiler/installation).
+### 1. Instalar dependências
 
-## Expandindo a configuração do ESLint
+```bash
+npm install
+```
 
-Se você está desenvolvendo uma aplicação de produção, recomendamos usar TypeScript com regras de linting com reconhecimento de tipo ativadas. Confira o [template TS](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) para informações sobre como integrar TypeScript e [`typescript-eslint`](https://typescript-eslint.io) em seu projeto.
+### 2. Configurar variáveis de ambiente
+
+Crie um arquivo `.env` na raiz do projeto:
+
+```env
+VITE_SUPABASE_URL=sua_url_do_supabase
+VITE_SUPABASE_ANON_KEY=sua_chave_anonima
+```
+
+### 3. Iniciar desenvolvimento
+
+```bash
+npm run dev
+```
+
+## Scripts Disponíveis
+
+| Comando | Descrição |
+|---------|-----------|
+| `npm run dev` | Inicia o servidor de desenvolvimento |
+| `npm run build` | Compila para produção |
+| `npm run preview` | Preview da build de produção |
+| `npm run lint` | Executa ESLint |
+
+## Estrutura do Projeto
+
+```
+src/
+├── components/      # Componentes React reutilizáveis
+├── hooks/          # Custom hooks
+├── lib/            # Configurações (Supabase client)
+├── pages/          # Páginas da aplicação
+├── services/       # Comunicação com APIs
+├── stores/         # Estado global (Zustand)
+├── types/          # Definições JSDoc
+└── main.jsx        # Entry point
+```
+
+## Funcionalidades
+
+- [x] Autenticação (Login/Cadastro)
+- [ ] Gestão de Alunos
+- [ ] Registo de Avaliações
+- [ ] Acompanhamento de Evolução
+- [ ] Dashboard com Métricas
+
+## Documentação
+
+- [Arquitetura](./ARCHITECTURE.md)
+- [Banco de Dados](./DATABASE.md)
+- [Supabase](./SUPABASE.md)
+- [Contribuição](./CONTRIBUTING.md)
+
+## Licença
+
+Privado - Todos os direitos reservados
