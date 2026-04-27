@@ -1,82 +1,4 @@
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  min-height: 100vh;;
-}
-
-.links {
-  display: flex;
-  gap: 1px;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  min-height: 5vh;
-
-}
-
-.links a {
-  color: #8d4a16;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-p {
-  color: #FFF;
-  font-size: 13.2px;
-  padding: 0%;
-}
-
-
-
-h1 {
-  color: #FFF;
-  font-size: 35.2px;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 33px;
-  padding: 33px;
-  border-radius: 22px;
-  background-color: rgba(179, 108, 32, 0.182);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(212, 208, 208, 0.3);
-  max-width: 100%;
-  width: 440px;
-  margin-bottom: 20px;
-
-  & button {
-    border-radius: 33px;
-    background-color: #ffb74d;
-    height: 44px;
-    border: none;
-    width: 110px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-
-  & button:hover {
-    opacity: 0.8;
-  }
-
-  & input {
-    padding: 11px;
-    background-color: #fff;
-    border: #fff;
-    border-radius: 22px;
-    border: none;
-    width: 100%;
-    outline: none;
-    font-size: 15.4px;
-  }
-
-
-}
-
+/* Fundo e animações exclusivas da Home */
 body {
   position: relative;
   min-height: 100vh;
@@ -101,7 +23,7 @@ body {
   max-width: 200px;
   height: 100px;
   min-height: 40%;
-  background: rgba(255, 255, 255, 0.16);
+  background: rgba(203, 222, 184, 0.16);
   border-radius: 5px;
   transform-origin: bottom center;
   animation: wave 4.7s cubic-bezier(0.61, 0.75, 0.55, 1) infinite alternate;
@@ -151,7 +73,74 @@ body {
   }
 }
 
-.error-message {
+@media (prefers-reduced-motion: reduce) {
+  .background-bars span {
+    animation: none;
+    opacity: 0.75;
+  }
+}
+
+/* Estilos blindados da Home (nada vaza daqui!) */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.container .title {
+  color: #FFF;
+  font-size: 35.2px;
+  margin-bottom: 20px; /* Adicionei uma margem pra respirar */
+}
+
+.container .form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 33px;
+  padding: 33px;
+  border-radius: 22px;
+  background-color: rgba(119, 144, 106, 0.182);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(179, 249, 171, 0.3);
+  max-width: 100%;
+  width: 440px;
+  margin-bottom: 20px;
+}
+
+.container .form .input {
+  padding: 11px;
+  background-color: #fff;
+  border-radius: 22px;
+  border: none;
+  width: 100%;
+  outline: none;
+  font-size: 15.4px;
+}
+
+.container .form .button {
+  border-radius: 33px;
+  background-color: #cbdeb8;
+  height: 44px;
+  border: none;
+  width: 110px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.container .form .button:hover {
+  opacity: 0.8;
+}
+
+.container .form .button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.container .error-message {
   background-color: rgba(220, 53, 69, 0.9);
   color: #fff;
   padding: 10px 15px;
@@ -161,14 +150,28 @@ body {
   text-align: center;
 }
 
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+.container .links {
+  display: flex;
+  gap: 5px; /* Dei um respirozinho aqui */
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 5vh;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .background-bars span {
-    animation: none;
-    opacity: 0.75;
-  }
+.container .links p {
+  color: #FFF;
+  font-size: 13.2px;
+  padding: 0%;
+  margin: 0; /* Tira as margens padrão do parágrafo */
+}
+
+.container .links a {
+  color: #193a13;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.container .links a:hover {
+  text-decoration: underline;
 }
