@@ -1,0 +1,146 @@
+/**
+ * Estilos para o componente DashProfessor.
+ * Define a estética de navegação ativa com efeito de extrusão sutil.
+ * Utiliza paleta cromática #1f4017 para destaque e sombras com opacidade reduzida (0.1).
+ */
+
+.dash-professor-container {
+  font-family: 'Inter', 'Segoe UI', Tahoma, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+}
+
+.prof-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 60px;
+  background-color: rgba(119, 144, 106, 0.1);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(179, 249, 171, 0.2);
+}
+
+.prof-nav {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.prof-nav .nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  color: #fff;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  padding: 8px 12px;
+  border-radius: 22px;
+  opacity: 0.7;
+  min-width: 80px;
+}
+
+/**
+ * Estilização do item de navegação ativo com efeito de projeção para fora da tela.
+ * Sombra configurada com opacidade de 0.1 para conferir sutileza visual ao relevo.
+ */
+.prof-nav .nav-item.active {
+  color: #1f4017;
+  opacity: 1;
+  background-color: rgba(119, 144, 106, 0.182); /* Estilo idêntico ao background dos formulários */
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(179, 249, 171, 0.3);
+  /* Box-shadow com opacidade 0.1 conforme especificação do usuário */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px) scale(1.03);
+}
+
+.prof-nav .nav-item:hover:not(.active) {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.nav-icon {
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.nav-text {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.prof-avatar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 48px;
+  border: 2px solid rgba(179, 249, 171, 0.3);
+  border-radius: 50%;
+  color: #fff;
+  background-color: rgba(119, 144, 106, 0.3);
+  cursor: pointer;
+}
+
+.prof-main {
+  padding: 40px 60px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.section-title {
+  font-size: 35.2px;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 40px;
+  align-self: center;
+  text-align: center;
+}
+
+.classes-panel {
+  max-width: 700px;
+  align-self: center;
+  width: 100%;
+  background-color: rgba(119, 144, 106, 0.182);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(179, 249, 171, 0.3);
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.class-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  border-bottom: 1px solid rgba(179, 249, 171, 0.1);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.class-row:hover {
+  background-color: rgba(203, 222, 184, 0.15);
+}
+
+.class-name {
+  font-size: 19px;
+  color: #fff;
+}
+
+.class-arrow {
+  font-size: 24px;
+  color: #cbdeb8;
+}
+
+@media (max-width: 900px) {
+  .prof-header { padding: 15px 20px; }
+  .prof-nav { gap: 8px; }
+  .nav-text { display: none; } /* Otimização de espaço em dispositivos móveis */
+}

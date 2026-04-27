@@ -1,0 +1,151 @@
+/**
+ * Estilos para o componente DashPersonal.
+ * Implementa a identidade visual baseada em Glassmorphism com efeito pop-out sutil.
+ * Configurações de cores (#1f4017) e sombras (opacidade 0.1) conforme especificações.
+ */
+
+.dash-personal-container {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+}
+
+.per-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 60px;
+  background-color: rgba(119, 144, 106, 0.1);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(179, 249, 171, 0.2);
+}
+
+.per-nav {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.per-nav .nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  color: #fff;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  padding: 8px 15px;
+  border-radius: 22px;
+  opacity: 0.7;
+  min-width: 80px;
+}
+
+/**
+ * Estilização do item de navegação ativo com efeito de extrusão ("pop-out").
+ * Utiliza o background translúcido (#77906a18) e sombra sutil (0.1) para profundidade.
+ */
+.per-nav .nav-item.active {
+  color: #1f4017; /* Cor institucional definida para estado ativo */
+  opacity: 1;
+  background-color: rgba(119, 144, 106, 0.182); /* Identidade visual dos painéis centrais */
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(179, 249, 171, 0.3);
+  /* Box-shadow com opacidade 0.1 para efeito de profundidade discreto */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px) scale(1.03);
+}
+
+.per-nav .nav-item:hover:not(.active) {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.nav-icon {
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.nav-text {
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: lowercase;
+}
+
+.per-avatar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 46px;
+  height: 46px;
+  border: 2px solid rgba(179, 249, 171, 0.3);
+  border-radius: 50%;
+  color: #fff;
+  background-color: rgba(119, 144, 106, 0.3);
+  cursor: pointer;
+}
+
+.per-main {
+  padding: 45px 70px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.per-section-title {
+  font-size: 35.2px;
+  font-weight: bold;
+  margin-bottom: 45px;
+  color: #fff;
+  align-self: center;
+  text-align: center;
+}
+
+.per-list-panel {
+  max-width: 750px;
+  width: 100%;
+  align-self: center;
+  background-color: rgba(119, 144, 106, 0.182);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(179, 249, 171, 0.3);
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.per-list-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 30px;
+  border-bottom: 1px solid rgba(179, 249, 171, 0.1);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.per-list-row:hover {
+  background-color: rgba(203, 222, 184, 0.15);
+}
+
+.per-list-row:last-child {
+  border-bottom: none;
+}
+
+.per-aluno-name {
+  font-size: 19px;
+  color: #fff;
+}
+
+.per-list-arrow {
+  font-size: 24px;
+  color: #cbdeb8;
+}
+
+@media (max-width: 850px) {
+  .per-header { padding: 15px 20px; }
+  .per-nav { gap: 10px; }
+  .nav-text { display: none; } /* Omissão de rótulos em dispositivos móveis */
+}

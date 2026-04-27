@@ -1,0 +1,44 @@
+/**
+ * Estilos base para a estrutura principal da rota Dashboard.
+ * Estes estilos são aplicados primordialmente aos estados de transição (carregamento)
+ * e às interfaces de contingência (falhas de validação de nível de acesso).
+ */
+
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #121212; /* Ajuste para a cor de fundo padrão da sua aplicação */
+  text-align: center;
+}
+
+.dashboard-container .title {
+  color: #ffffff;
+  font-size: 35.2px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.dashboard-container p {
+  color: #e0e0e0;
+  font-size: 16px;
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+/**
+ * Animação suave para o texto de carregamento,
+ * proporcionando melhor feedback visual ao usuário.
+ */
+.dashboard-container .loading-text {
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}

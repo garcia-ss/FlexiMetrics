@@ -1,6 +1,19 @@
 # FlexiMetrics
 
 Sistema de gestão de métricas para personal trainers e professores de educação física.
+Integrantes
+
+## Este projeto foi desenvolvido pelo seguinte grupo:
+
+   - Pedro dos Santos Garcia
+
+   - Matheus Serra Lourenço Coelho dos Santos
+
+   - Vinicius Machado de Assunção
+
+   - Rodrigo Angelim
+
+   - Danilo Pereira Peixoto
 
 ## Tecnologias
 

@@ -1,0 +1,148 @@
+/**
+ * Estilos para o componente DashAluno.
+ * Inclui estilização de profundidade (3D/pop-out) para itens de navegação ativos,
+ * mantendo a coerência visual com o efeito Glassmorphism da aplicação.
+ */
+
+.dash-aluno-container {
+  font-family: 'Inter', -apple-system, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+}
+
+.alu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  /* Fundo translúcido base */
+  background-color: rgba(119, 144, 106, 0.1);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(179, 249, 171, 0.2);
+}
+
+.alu-nav {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.alu-nav .nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  color: #fff;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  padding: 10px 15px;
+  border-radius: 22px;
+  opacity: 0.7;
+  min-width: 85px;
+}
+
+/**
+ * Estilização do item de navegação ativo com efeito de extrusão ("pra fora da tela").
+ * Utiliza Glassmorphism e box-shadow para criar profundidade e destaque.
+ */
+.alu-nav .nav-item.active {
+  color: #1f4017; /* Cor atualizada conforme requisito */
+  opacity: 1;
+  background-color: rgba(119, 144, 106, 0.182); /* Estilo idêntico ao background da tabela */
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(179, 249, 171, 0.3);
+  /* Efeito de sombra para projetar o elemento para fora da tela */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 
+              inset 0 1px 2px rgba(255, 255, 255, 0.2);
+  transform: translateY(-5px) scale(1.05); /* Projeção física para cima */
+}
+
+.alu-nav .nav-item:hover:not(.active) {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.nav-icon {
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.nav-text {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.alu-avatar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
+  border: 2px solid rgba(179, 249, 171, 0.3);
+  border-radius: 50%;
+  color: #fff;
+  background-color: rgba(119, 144, 106, 0.3);
+  cursor: pointer;
+}
+
+.alu-main {
+  padding: 50px 80px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.alu-section-title {
+  font-size: 35.2px;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 45px;
+  align-self: center;
+}
+
+/* Painel de Listagem Centralizado */
+.alu-list-panel {
+  max-width: 800px;
+  width: 100%;
+  align-self: center;
+  background-color: rgba(119, 144, 106, 0.182);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(179, 249, 171, 0.3);
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.alu-list-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 35px;
+  border-bottom: 1px solid rgba(179, 249, 171, 0.1);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.alu-list-row:hover {
+  background-color: rgba(203, 222, 184, 0.15);
+}
+
+.alu-item-name {
+  font-size: 19px;
+  color: #fff;
+}
+
+.alu-item-arrow {
+  font-size: 24px;
+  color: #cbdeb8;
+}
+
+@media (max-width: 768px) {
+  .alu-header { padding: 15px 20px; }
+  .alu-nav { gap: 10px; }
+  .nav-text { display: none; } /* Oculta texto em telas pequenas para manter o layout */
+}
