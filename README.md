@@ -24,7 +24,7 @@ A solução foca na visualização de dados do aluno a longo prazo, através de 
 
 A documentação completa do projeto, contemplando aspectos negociais e técnicos, encontra-se disponível na pasta `docs/` e em arquivos dedicados na raiz do repositório:
 
-- 📄 **[Resumo Executivo (PDF)](./Resumo_Executivo_FlexiMetrics.pdf)** — Visão negocial, público-alvo, benefícios e protótipo visual atualizado.
+- 📄 **[Resumo Executivo (PDF)](./docs/Resumo%20Executivo%20-%20FlexiMetrics.pdf)** — Visão negocial, público-alvo, benefícios e protótipo visual atualizado.
 - 🏗️ **[Arquitetura do Sistema](./ARCHITECTURE.md)** — Detalhamento da arquitetura técnica, padrões utilizados e infraestrutura.
 - 🗄️ **[Modelagem de Banco de Dados](./DATABASE.md)** — Diagramas e descrição das entidades do PostgreSQL (Supabase).
 - 🤝 **[Guia de Contribuição](./CONTRIBUTING.md)** — Padrões de código e fluxo de versionamento.
