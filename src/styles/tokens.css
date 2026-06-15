@@ -1,0 +1,83 @@
+/**
+ * FlexiMetrics — Design tokens ("Performance Lab")
+ * Semantic CSS variables. Dark-first: light values on :root, dark overrides on .dark.
+ * The document starts with <html class="dark">.
+ */
+
+:root {
+  /* Surfaces */
+  --color-canvas: #f4f6f8;
+  --color-surface: #ffffff;
+  --color-card: #ffffff;
+  --color-elevated: #eef1f5;
+  --color-line: #e2e8f0;
+  --color-line-strong: #cbd5e1;
+
+  /* Text */
+  --color-ink: #0f1722;
+  --color-muted: #51607a;
+  --color-subtle: #8a97ad;
+
+  /* Accent "volt" */
+  --color-volt: #3f7d00;
+  --color-volt-soft: rgba(63, 125, 0, 0.12);
+  --color-volt-ink: #ffffff;
+
+  /* Semantic */
+  --color-success: #15803d;
+  --color-warning: #b45309;
+  --color-danger: #dc2626;
+  --color-info: #2563eb;
+
+  /* Data-viz neutrals */
+  --color-viz-1: #94a3b8;
+  --color-viz-2: #64748b;
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+
+  /* Elevation */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 34, 0.06), 0 1px 3px rgba(15, 23, 34, 0.08);
+  --shadow-md: 0 4px 16px rgba(15, 23, 34, 0.08);
+  --shadow-lg: 0 12px 32px rgba(15, 23, 34, 0.12);
+  --shadow-volt: 0 8px 24px rgba(63, 125, 0, 0.18);
+}
+
+.dark {
+  /* Surfaces */
+  --color-canvas: #0c0f14;
+  --color-surface: #0e1218;
+  --color-card: #11161e;
+  --color-elevated: #161d28;
+  --color-line: #1f2937;
+  --color-line-strong: #2a3444;
+
+  /* Text */
+  --color-ink: #e8edf2;
+  --color-muted: #9aa6b6;
+  --color-subtle: #6b7686;
+
+  /* Accent "volt" */
+  --color-volt: #c8ff3d;
+  --color-volt-soft: rgba(200, 255, 61, 0.12);
+  --color-volt-ink: #0c0f14;
+
+  /* Semantic */
+  --color-success: #5ee07a;
+  --color-warning: #f5b73d;
+  --color-danger: #f4634e;
+  --color-info: #4ea8ff;
+
+  /* Data-viz neutrals */
+  --color-viz-1: #3a4759;
+  --color-viz-2: #56657c;
+
+  /* Elevation (deeper on dark) */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.5);
+  --shadow-volt: 0 8px 28px rgba(200, 255, 61, 0.16);
+}
