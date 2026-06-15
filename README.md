@@ -1,89 +1,114 @@
 # FlexiMetrics
 
-Sistema de gestão de métricas para personal trainers e professores de educação física.
-Integrantes
+## Equipe
 
-## Este projeto foi desenvolvido pelo seguinte grupo:
+| Nome | RA |
+|---|---|
+| Danilo Pereira Peixoto | 22306862 |
+| Matheus Serra Lourenço Coelho dos Santos | 22350663 |
+| Pedro dos Santos Garcia | 22352266 |
+| Rodrigo Angelim da Cunha | 22301488 |
+| Vinicius Machado de Assunção | 22310815 |
 
-   - Pedro dos Santos Garcia
+---
 
-   - Matheus Serra Lourenço Coelho dos Santos
+## Sobre o Projeto
 
-   - Vinicius Machado de Assunção
+O **FlexiMetrics** é uma plataforma na modalidade *Software as a Service (SaaS)* voltada para profissionais de educação física, personal trainers e gestores de treinamento. O sistema tem como objetivo principal a gestão eficiente de métricas de desempenho físico, automatizando o registro de avaliações corporais (IMC, RCE, flexibilidade, agilidade, potência, etc.) e substituindo a utilização obsoleta de planilhas e controles em papel.
 
-   - Rodrigo Angelim
+A solução foca na visualização de dados do aluno a longo prazo, através de dashboards analíticos (conceito *Performance Lab*), facilitando a percepção de evolução e auxiliando na retenção de alunos.
 
-   - Danilo Pereira Peixoto
+---
 
-## Tecnologias
+## Documentação Complementar
 
-- **Frontend**: React 19 + Vite
-- **Estilo**: CSS3
-- **Estado**: Zustand
-- **Backend**: Supabase (Auth + Database)
-- **Roteamento**: React Router v7
+A documentação completa do projeto, contemplando aspectos negociais e técnicos, encontra-se disponível na pasta `docs/` e em arquivos dedicados na raiz do repositório:
 
-## Getting Started
+- 📄 **[Resumo Executivo (PDF)](./Resumo_Executivo_FlexiMetrics.pdf)** — Visão negocial, público-alvo, benefícios e protótipo visual atualizado.
+- 🏗️ **[Arquitetura do Sistema](./ARCHITECTURE.md)** — Detalhamento da arquitetura técnica, padrões utilizados e infraestrutura.
+- 🗄️ **[Modelagem de Banco de Dados](./DATABASE.md)** — Diagramas e descrição das entidades do PostgreSQL (Supabase).
+- 🤝 **[Guia de Contribuição](./CONTRIBUTING.md)** — Padrões de código e fluxo de versionamento.
 
-### 1. Instalar dependências
+---
+
+## Tecnologias Utilizadas
+
+| Camada | Tecnologias |
+|---|---|
+| **Frontend** | React 19, TypeScript, Vite |
+| **Estilização** | Tailwind CSS v4, Lucide React |
+| **Gerenciamento de Estado** | Zustand |
+| **Visualização de Dados** | Recharts, Framer Motion |
+| **Backend / BaaS** | Supabase (PostgreSQL, Autenticação) |
+| **Testes** | Vitest |
+
+---
+
+## Instruções de Execução
+
+### Pré-requisitos
+
+- Node.js (versão 18+ recomendada)
+- Gerenciador de pacotes `npm`
+
+### Instalação e Execução
+
+1. Clone o repositório:
+   ```bash
+   git clone https://[seu-link-do-repositorio].git
+   ```
+
+2. Acesse a pasta do projeto:
+   ```bash
+   cd FlexiMetrics
+   ```
+
+3. Instale as dependências:
+   ```bash
+   npm install
+   ```
+
+4. Execute o projeto em ambiente de desenvolvimento:
+   ```bash
+   npm run dev
+   ```
+
+A aplicação estará disponível em [http://localhost:5173](http://localhost:5173).
+
+### Execução de Testes
+
+Para rodar a suíte de testes unitários desenvolvidos (ex: métricas e KPIs):
 
 ```bash
-npm install
+npm run test
 ```
 
-### 2. Configurar variáveis de ambiente
+---
 
-Crie um arquivo `.env` na raiz do projeto:
+## Ajustes Realizados a Partir de Feedbacks (Segunda Menção)
 
-```env
-VITE_SUPABASE_URL=sua_url_do_supabase
-VITE_SUPABASE_ANON_KEY=sua_chave_anonima
-```
+Atendendo às observações das etapas anteriores e buscando a evolução do sistema, os seguintes ajustes foram implementados para esta entrega:
 
-### 3. Iniciar desenvolvimento
+- **Implementação do Mock Adapter:** Adicionado um adaptador de dados em memória e `localStorage` (`src/data/adapters/mock`) para garantir que o sistema possa ser avaliado e demonstrado plenamente sem dependência de internet ou infraestrutura de rede externa no dia da apresentação.
 
-```bash
-npm run dev
-```
+- **Revisão da Interface (Performance Lab):** Refinamento do layout em modo escuro (*Dark Mode*) utilizando Tailwind CSS v4, melhorando o contraste e a usabilidade dos gráficos e do painel de ranqueamento, conforme sugerido nas validações de UI/UX.
 
-## Scripts Disponíveis
+- **Cálculos de Avaliação Automatizados:** Correção e adição de testes unitários (`src/domain/metrics.test.ts`) nas lógicas de cálculo de IMC e RCE para garantir 100% de precisão nos formulários de cadastro de avaliação.
 
-| Comando | Descrição |
-|---------|-----------|
-| `npm run dev` | Inicia o servidor de desenvolvimento |
-| `npm run build` | Compila para produção |
-| `npm run preview` | Preview da build de produção |
-| `npm run lint` | Executa ESLint |
+- **Resumo Executivo Editável/PDF:** A documentação negocial principal foi padronizada no formato exigido pela disciplina, abordando de forma mais clara a proposta de valor e a conversão de métricas analógicas para o meio digital.
 
-## Estrutura do Projeto
+---
 
-```
-src/
-├── components/      # Componentes React reutilizáveis
-├── hooks/          # Custom hooks
-├── lib/            # Configurações (Supabase client)
-├── pages/          # Páginas da aplicação
-├── services/       # Comunicação com APIs
-├── stores/         # Estado global (Zustand)
-├── types/          # Definições JSDoc
-└── main.jsx        # Entry point
-```
+## Quadro de Contribuições Individuais
 
-## Funcionalidades
+| Integrante | Atividades Desenvolvidas | Evidências / Observações |
+|---|---|---|
+| **Danilo Pereira Peixoto** | Rebranding da solução no UI/UX, desenvolvimento do Dashboard principal, integração dos gráficos (Recharts) e painel de Ranking entre alunos. | Histórico de commits (Componentes Visuais, `DashboardPage.tsx`), telas no Figma e arquivos nas pastas `src/components/layout/` e `src/components/charts/`. |
+| **Matheus Serra Lourenço** | Desenvolvimento de UI/UX, criação das lógicas de negócio do domínio, desenvolvimento da tela de Avaliações e implementação de testes automatizados. | Histórico de commits, telas no Figma, arquivos `src/features/avaliacoes/` e rotinas de teste (`metrics.test.ts`). |
+| **Pedro dos Santos Garcia** | Configuração inicial do ambiente Vite/TS, integração de arquitetura (Repository Pattern), Mock Adapter, integração Supabase e CI/CD, auxílio no desenvolvimento de UI/UX e responsável pela documentação do Resumo Executivo. | Histórico de commits, arquivos em `src/data/adapters/`, configurações de ambiente/Supabase e `Resumo_Executivo_FlexiMetrics.pdf`. |
+| **Rodrigo Angelim da Cunha** | Idealização e estruturação do Banco de Dados e Backend, documentação do Resumo Executivo. | Histórico de commits, modelagem do banco (`DATABASE.md`), arquivos de backend e `Resumo_Executivo_FlexiMetrics.pdf`. |
+| **Vinicius Machado** | Responsável pela documentação técnica (Arquitetura, BD), gerenciamento de estados no Zustand, roteamento e idealização e estruturação do Banco de Dados e Backend. | Histórico de commits, arquivos em `docs/`, `src/stores/` e estruturação geral do `README.md`. |
 
-- [x] Autenticação (Login/Cadastro)
-- [ ] Gestão de Alunos
-- [ ] Registo de Avaliações
-- [ ] Acompanhamento de Evolução
-- [ ] Dashboard com Métricas
+---
 
-## Documentação
-
-- [Arquitetura](./ARCHITECTURE.md)
-- [Banco de Dados](./DATABASE.md)
-- [Supabase](./SUPABASE.md)
-- [Contribuição](./CONTRIBUTING.md)
-
-## Licença
-
-Privado - Todos os direitos reservados
+> Projeto acadêmico desenvolvido para a **Faculdade de Tecnologia e Ciências Sociais Aplicadas — CEUB** (Junho de 2026).
