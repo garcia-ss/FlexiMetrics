@@ -20,7 +20,7 @@ export function navFor(perfil: Perfil): NavItem[] {
     { to: '/app', label: 'Visão geral', icon: <LayoutDashboard className={ICON} />, end: true },
     { to: '/app/alunos', label: 'Alunos', icon: <Users className={ICON} /> },
   ]
-  if (perfil === 'professor') {
+  if (perfil === 'professor' || perfil === 'admin') {
     items.push({ to: '/app/turmas', label: 'Turmas', icon: <Layers className={ICON} /> })
   }
   items.push(
@@ -33,5 +33,5 @@ export function navFor(perfil: Perfil): NavItem[] {
 export const PERFIL_LABEL: Record<Perfil, string> = {
   aluno: 'Aluno',
   professor: 'Professor',
-  personal: 'Personal Trainer',
+  admin: 'Administrador',
 }

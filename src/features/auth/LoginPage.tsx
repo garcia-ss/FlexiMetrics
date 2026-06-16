@@ -8,7 +8,7 @@ import type { Perfil } from '@/domain/types'
 import { PERFIL_LABEL } from '@/app/navigation'
 import { cn } from '@/lib/cn'
 
-const PERFIS: Perfil[] = ['professor', 'personal', 'aluno']
+const PERFIS: Perfil[] = ['professor', 'aluno']
 
 export function LoginPage() {
   const navigate = useNavigate()
@@ -39,7 +39,7 @@ export function LoginPage() {
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div>
           <p className="mb-1.5 text-xs font-medium text-muted">Perfil de demonstração</p>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 gap-2">
             {PERFIS.map((p) => (
               <button
                 key={p}

@@ -91,7 +91,6 @@ export function CadastroPage() {
           error={errors.perfil}
           options={[
             { value: 'professor', label: 'Professor' },
-            { value: 'personal', label: 'Personal Trainer' },
             { value: 'aluno', label: 'Aluno' },
           ]}
           onChange={(e) => set('perfil', e.target.value)}

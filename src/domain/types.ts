@@ -2,7 +2,7 @@
 
 export type Genero = 'masculino' | 'feminino' | 'outro'
 
-export type Perfil = 'aluno' | 'professor' | 'personal'
+export type Perfil = 'aluno' | 'professor' | 'admin'
 
 /** Physical test metric keys (excludes derived imc/rce, which live on Aluno). */
 export type MetricaKey =
