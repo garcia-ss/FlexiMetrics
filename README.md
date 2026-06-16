@@ -14,15 +14,13 @@
 
 ## Sobre o Projeto
 
-O **FlexiMetrics** é uma plataforma na modalidade *Software as a Service (SaaS)* voltada para profissionais de educação física, personal trainers e gestores de treinamento. O sistema tem como objetivo principal a gestão eficiente de métricas de desempenho físico, automatizando o registro de avaliações corporais (IMC, RCE, flexibilidade, agilidade, potência, etc.) e substituindo a utilização obsoleta de planilhas e controles em papel.
+O **FlexiMetrics** é uma plataforma na modalidade *Software as a Service (SaaS)* voltada para profissionais de educação física e gestores de treinamento. O sistema tem como objetivo principal a gestão eficiente de métricas de desempenho físico, automatizando o registro de avaliações corporais (IMC, RCE, flexibilidade, agilidade, potência, etc.) e substituindo a utilização obsoleta de planilhas e controles em papel.
 
 A solução foca na visualização de dados do aluno a longo prazo, através de dashboards analíticos (conceito *Performance Lab*), facilitando a percepção de evolução e auxiliando na retenção de alunos.
 
 ---
 
 ## Documentação Complementar
-
-A documentação completa do projeto, contemplando aspectos negociais e técnicos, encontra-se disponível na pasta `docs/` e em arquivos dedicados na raiz do repositório:
 
 - 📄 **[Resumo Executivo (PDF)](./docs/Resumo%20Executivo%20-%20FlexiMetrics.pdf)** — Visão negocial, público-alvo, benefícios e protótipo visual atualizado.
 - 🏗️ **[Arquitetura do Sistema](./ARCHITECTURE.md)** — Detalhamento da arquitetura técnica, padrões utilizados e infraestrutura.
@@ -39,7 +37,7 @@ A documentação completa do projeto, contemplando aspectos negociais e técnico
 | **Estilização** | Tailwind CSS v4, Lucide React |
 | **Gerenciamento de Estado** | Zustand |
 | **Visualização de Dados** | Recharts, Framer Motion |
-| **Backend / BaaS** | Supabase (PostgreSQL, Autenticação) |
+| **Backend / BaaS** | Supabase (PostgreSQL, Autenticação, RLS) |
 | **Testes** | Vitest |
 
 ---
@@ -56,19 +54,23 @@ A documentação completa do projeto, contemplando aspectos negociais e técnico
 1. Clone o repositório:
    ```bash
    git clone https://[seu-link-do-repositorio].git
-   ```
-
-2. Acesse a pasta do projeto:
-   ```bash
    cd FlexiMetrics
    ```
 
-3. Instale as dependências:
+2. Instale as dependências:
    ```bash
    npm install
    ```
 
-4. Execute o projeto em ambiente de desenvolvimento:
+3. Configure as variáveis de ambiente — crie um arquivo `.env` na raiz com:
+   ```env
+   VITE_DATA_SOURCE=supabase
+   VITE_SUPABASE_URL=https://soeyfmnjuispbryslwiq.supabase.co
+   VITE_SUPABASE_ANON_KEY=<anon_key>
+   ```
+   > Para rodar sem internet (modo offline), omita `VITE_DATA_SOURCE` ou defina como `mock`.
+
+4. Execute o projeto:
    ```bash
    npm run dev
    ```
@@ -77,25 +79,68 @@ A aplicação estará disponível em [http://localhost:5173](http://localhost:51
 
 ### Execução de Testes
 
-Para rodar a suíte de testes unitários desenvolvidos (ex: métricas e KPIs):
-
 ```bash
 npm run test
 ```
 
 ---
 
+## Perfis de Acesso
+
+O sistema possui três perfis com permissões distintas, controladas por Row Level Security (RLS) no Supabase:
+
+| Perfil | Acesso |
+|---|---|
+| **Professor** | Gerencia suas próprias turmas, alunos e avaliações |
+| **Aluno** | Visualiza apenas sua própria evolução e avaliações |
+| **Admin** | Acesso total a todos os dados do sistema |
+
+### Contas de demonstração
+
+| Email | Senha | Perfil |
+|---|---|---|
+| `professor@fleximetrics.app` | `demo1234` | Professor |
+| `aluno@fleximetrics.app` | `demo1234` | Aluno (Lucas Ferreira) |
+| `admin@fleximetrics.app` | `demo1234` | Administrador |
+
+---
+
+## Banco de Dados
+
+O schema do PostgreSQL (Supabase) é composto por cinco tabelas:
+
+```
+usuario      — perfil de autenticação (ligado ao auth.users)
+professor    — perfil estendido do professor
+turma        — grupos de alunos vinculados a um professor
+aluno        — dados físicos e métricas de cada aluno
+avaliacao    — avaliações mensais com histórico de evolução
+```
+
+O banco está pré-populado com dados de demonstração: 3 turmas, 12 alunos e 36 avaliações (Março, Abril e Maio de 2026) exibindo evolução progressiva das métricas.
+
+### Fonte de dados
+
+O sistema suporta dois modos de operação definidos pela variável `VITE_DATA_SOURCE`:
+
+| Valor | Comportamento |
+|---|---|
+| `supabase` | Usa o banco PostgreSQL real via Supabase |
+| `mock` (padrão) | Usa adaptador em memória + `localStorage`, sem necessidade de rede |
+
+---
+
 ## Ajustes Realizados a Partir de Feedbacks (Segunda Menção)
 
-Atendendo às observações das etapas anteriores e buscando a evolução do sistema, os seguintes ajustes foram implementados para esta entrega:
+- **Integração Supabase ativada:** O adapter de produção foi conectado ao banco PostgreSQL real, com schema alinhado ao modelo de domínio do frontend e RLS configurado por perfil de usuário.
 
-- **Implementação do Mock Adapter:** Adicionado um adaptador de dados em memória e `localStorage` (`src/data/adapters/mock`) para garantir que o sistema possa ser avaliado e demonstrado plenamente sem dependência de internet ou infraestrutura de rede externa no dia da apresentação.
+- **Row Level Security (RLS):** Implementação completa de políticas de segurança — professores acessam apenas seus próprios alunos, alunos visualizam somente seus dados, administradores têm visibilidade total.
 
-- **Revisão da Interface (Performance Lab):** Refinamento do layout em modo escuro (*Dark Mode*) utilizando Tailwind CSS v4, melhorando o contraste e a usabilidade dos gráficos e do painel de ranqueamento, conforme sugerido nas validações de UI/UX.
+- **Mock Adapter mantido:** O adaptador offline (`src/data/adapters/mock`) permanece funcional para demonstrações sem dependência de rede, ativado simplesmente omitindo `VITE_DATA_SOURCE`.
 
-- **Cálculos de Avaliação Automatizados:** Correção e adição de testes unitários (`src/domain/metrics.test.ts`) nas lógicas de cálculo de IMC e RCE para garantir 100% de precisão nos formulários de cadastro de avaliação.
+- **Revisão da Interface (Performance Lab):** Refinamento do layout em modo escuro utilizando Tailwind CSS v4, melhorando o contraste e usabilidade dos gráficos e do painel de ranqueamento.
 
-- **Resumo Executivo Editável/PDF:** A documentação negocial principal foi padronizada no formato exigido pela disciplina, abordando de forma mais clara a proposta de valor e a conversão de métricas analógicas para o meio digital.
+- **Cálculos de Avaliação Automatizados:** Testes unitários em `src/domain/metrics.test.ts` garantem precisão nos cálculos de IMC e RCE.
 
 ---
 
@@ -103,11 +148,11 @@ Atendendo às observações das etapas anteriores e buscando a evolução do sis
 
 | Integrante | Atividades Desenvolvidas | Evidências / Observações |
 |---|---|---|
-| **Danilo Pereira Peixoto** | Rebranding da solução no UI/UX, desenvolvimento do Dashboard principal, integração dos gráficos (Recharts) e painel de Ranking entre alunos. | Histórico de commits (Componentes Visuais, `DashboardPage.tsx`), telas no Figma e arquivos nas pastas `src/components/layout/` e `src/components/charts/`. |
-| **Matheus Serra Lourenço** | Desenvolvimento de UI/UX, criação das lógicas de negócio do domínio, desenvolvimento da tela de Avaliações e implementação de testes automatizados. | Histórico de commits, telas no Figma, arquivos `src/features/avaliacoes/` e rotinas de teste (`metrics.test.ts`). |
-| **Pedro dos Santos Garcia** | Configuração inicial do ambiente Vite/TS, integração de arquitetura (Repository Pattern), Mock Adapter, integração Supabase e CI/CD, auxílio no desenvolvimento de UI/UX e responsável pela documentação do Resumo Executivo. | Histórico de commits, arquivos em `src/data/adapters/`, configurações de ambiente/Supabase e `Resumo_Executivo_FlexiMetrics.pdf`. |
-| **Rodrigo Angelim da Cunha** | Idealização e estruturação do Banco de Dados e Backend, documentação do Resumo Executivo. | Histórico de commits, modelagem do banco (`DATABASE.md`), arquivos de backend e `Resumo_Executivo_FlexiMetrics.pdf`. |
-| **Vinicius Machado** | Responsável pela documentação técnica (Arquitetura, BD), gerenciamento de estados no Zustand, roteamento e idealização e estruturação do Banco de Dados e Backend. | Histórico de commits, arquivos em `docs/`, `src/stores/` e estruturação geral do `README.md`. |
+| **Danilo Pereira Peixoto** | Rebranding da solução no UI/UX, desenvolvimento do Dashboard principal, integração dos gráficos (Recharts) e painel de Ranking entre alunos. | Histórico de commits, telas no Figma, arquivos em `src/components/layout/` e `src/components/charts/`. |
+| **Matheus Serra Lourenço** | Desenvolvimento de UI/UX, criação das lógicas de negócio do domínio, desenvolvimento da tela de Avaliações e implementação de testes automatizados. | Histórico de commits, telas no Figma, arquivos `src/features/avaliacoes/` e `metrics.test.ts`. |
+| **Pedro dos Santos Garcia** | Configuração do ambiente Vite/TS, arquitetura Repository Pattern, Mock Adapter, integração Supabase, CI/CD e Resumo Executivo. | Histórico de commits, arquivos em `src/data/adapters/` e configurações de ambiente. |
+| **Rodrigo Angelim da Cunha** | Idealização e estruturação do Banco de Dados, Backend e Resumo Executivo. | Histórico de commits, modelagem do banco (`DATABASE.md`). |
+| **Vinicius Machado de Assunção** | Documentação técnica, gerenciamento de estado com Zustand, roteamento, estruturação do Banco de Dados e Backend. | Histórico de commits, arquivos em `docs/`, `src/stores/`. |
 
 ---
 

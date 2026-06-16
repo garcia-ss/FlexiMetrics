@@ -71,6 +71,7 @@ export function CadastroPage() {
         )}
         <Input
           label="Nome completo"
+          placeholder="Seu nome completo"
           value={form.nome}
           error={errors.nome}
           leftIcon={<User className="h-4 w-4" />}
@@ -79,6 +80,7 @@ export function CadastroPage() {
         <Input
           type="email"
           label="E-mail"
+          placeholder="seu@email.com"
           value={form.email}
           error={errors.email}
           leftIcon={<Mail className="h-4 w-4" />}
@@ -98,6 +100,7 @@ export function CadastroPage() {
         <Input
           type="password"
           label="Senha"
+          placeholder="••••••••"
           value={form.password}
           error={errors.password}
           leftIcon={<Lock className="h-4 w-4" />}
@@ -106,6 +109,7 @@ export function CadastroPage() {
         <Input
           type="password"
           label="Confirmar senha"
+          placeholder="••••••••"
           value={form.confirm}
           error={errors.confirm}
           leftIcon={<Lock className="h-4 w-4" />}
