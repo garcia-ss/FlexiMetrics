@@ -56,7 +56,7 @@ export function Sidebar() {
       <aside className="hidden w-64 shrink-0 border-r border-line bg-surface lg:flex lg:flex-col">
         <Brand />
         <NavItems />
-        <div className="mt-auto px-5 py-4 text-xs text-subtle">v1.0 · Performance Lab</div>
+        <div className="mt-auto px-5 py-4 text-xs text-subtle">FlexiMetrics</div>
       </aside>
 
       {/* Mobile drawer */}

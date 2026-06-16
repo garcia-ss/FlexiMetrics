@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Layers, Pencil, Plus, Trash2, Users } from 'lucide-react'
 import { Topbar } from '@/components/layout/Topbar'
 import {
@@ -30,6 +31,7 @@ const emptyForm: TurmaForm = {
 }
 
 export function TurmasPage() {
+  const navigate = useNavigate()
   const toast = useToast()
   const [modalOpen, setModalOpen] = useState(false)
   const [editing, setEditing] = useState<Turma | null>(null)
@@ -60,7 +62,7 @@ export function TurmasPage() {
 
   useEffect(() => {
     if (!modalOpen) return
-    setForm(editing ? { nome: editing.nome, anoLetivo: editing.anoLetivo } : emptyForm)
+    setForm(editing ? { nome: editing.nome, anoLetivo: String(editing.anoLetivo) } : emptyForm)
     setFormError(null)
     setSaving(false)
   }, [editing, modalOpen])
@@ -85,14 +87,19 @@ export function TurmasPage() {
       setFormError('Informe o ano letivo.')
       return
     }
+    const anoLetivo = Number(form.anoLetivo.trim())
+    if (!Number.isInteger(anoLetivo)) {
+      setFormError('Informe um ano letivo valido.')
+      return
+    }
 
     setSaving(true)
     try {
       if (editing) {
-        await data.turmas.update(editing.id, { nome: form.nome.trim(), anoLetivo: form.anoLetivo.trim() })
+        await data.turmas.update(editing.id, { nome: form.nome.trim(), anoLetivo })
         toast.success('Turma atualizada.')
       } else {
-        await data.turmas.create({ nome: form.nome.trim(), anoLetivo: form.anoLetivo.trim() })
+        await data.turmas.create({ nome: form.nome.trim(), anoLetivo })
         toast.success('Turma criada.')
       }
       setModalOpen(false)
@@ -136,7 +143,16 @@ export function TurmasPage() {
       align: 'right',
       render: (turma) => (
         <div className="flex justify-end gap-1">
-          <Button type="button" variant="ghost" size="icon" aria-label={`Editar ${turma.nome}`} onClick={() => openEdit(turma)}>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            aria-label={`Editar ${turma.nome}`}
+            onClick={(event) => {
+              event.stopPropagation()
+              openEdit(turma)
+            }}
+          >
             <Pencil className="h-4 w-4" />
           </Button>
           <Button
@@ -144,7 +160,10 @@ export function TurmasPage() {
             variant="ghost"
             size="icon"
             aria-label={`Remover ${turma.nome}`}
-            onClick={() => void removeTurma(turma)}
+            onClick={(event) => {
+              event.stopPropagation()
+              void removeTurma(turma)
+            }}
           >
             <Trash2 className="h-4 w-4 text-danger" />
           </Button>
@@ -181,6 +200,7 @@ export function TurmasPage() {
               columns={columns}
               rows={turmas}
               rowKey={(turma) => turma.id}
+              onRowClick={(turma) => navigate(`/app/turmas/${turma.id}`)}
               emptyState={
                 <EmptyState
                   icon={<Layers className="h-7 w-7" />}
@@ -218,6 +238,9 @@ export function TurmasPage() {
           <Input label="Nome" value={form.nome} onChange={(event) => setForm({ ...form, nome: event.target.value })} />
           <Input
             label="Ano letivo"
+            type="number"
+            min="2000"
+            max="2100"
             value={form.anoLetivo}
             onChange={(event) => setForm({ ...form, anoLetivo: event.target.value })}
           />

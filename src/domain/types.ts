@@ -21,6 +21,7 @@ export type ClassificacaoImc = 'Abaixo do peso' | 'Normal' | 'Sobrepeso' | 'Obes
 export interface Aluno {
   id: string
   nome: string
+  matricula?: string | null
   genero: Genero
   dataNascimento: string // ISO date (YYYY-MM-DD)
   turmaId: string | null
@@ -40,7 +41,7 @@ export interface Aluno {
 export interface Turma {
   id: string
   nome: string
-  anoLetivo: string
+  anoLetivo: number
   professorId: string
   createdAt: string
 }
@@ -78,9 +79,29 @@ export interface Usuario {
   alunoId?: string | null
 }
 
+export interface Professor {
+  id: string
+  nome: string
+  email: string
+  escola?: string | null
+  telefone?: string | null
+  dataNascimento?: string | null
+  genero?: Genero | null
+  createdAt: string
+}
+
+export interface ProfessorInput {
+  nome: string
+  escola?: string | null
+  telefone?: string | null
+  dataNascimento?: string | null
+  genero?: Genero | null
+}
+
 /** Input shape for creating/updating an aluno (raw, derived fields recomputed). */
 export interface AlunoInput {
   nome: string
+  matricula?: string | null
   genero: Genero
   dataNascimento: string
   turmaId: string | null

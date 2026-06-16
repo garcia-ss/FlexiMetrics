@@ -1,111 +1,17 @@
-/**
- * Supabase data adapter (denormalized schema — see db/migrations/0001_init.sql).
- *
- * NOTE: This adapter is wired and type-correct but has not been validated against
- * a live project (the original Supabase instance is unreachable). To activate:
- *   1. Create a Supabase project and run db/migrations + db/seed.
- *   2. Set VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY, VITE_DATA_SOURCE=supabase.
- */
-import type { Aluno, AlunoInput, Avaliacao, PontoEvolucao, Turma, Usuario, Perfil } from '@/domain/types'
-import { calcImc, calcRce, classificarImc, idadeFrom } from '@/domain/metrics'
+import type { PontoEvolucao, Usuario } from '@/domain/types'
 import type { AvaliacaoInput, DataSource } from '@/data/repositories/types'
 import { getSupabase } from '@/lib/supabase'
-
-const todayIso = () => new Date().toISOString().slice(0, 10)
-const mesPt = (iso: string) =>
-  ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'][
-    new Date(iso).getMonth()
-  ]
-
-/** DB row → domain Aluno (derived fields recomputed for safety). */
-function rowToAluno(r: Record<string, unknown>): Aluno {
-  const peso = Number(r.peso)
-  const altura = Number(r.altura)
-  const cintura = Number(r.cintura)
-  const imc = calcImc(peso, altura)
-  return {
-    id: String(r.id),
-    nome: String(r.nome),
-    genero: r.genero as Aluno['genero'],
-    dataNascimento: String(r.data_nascimento),
-    turmaId: (r.turma_id as string | null) ?? null,
-    peso,
-    altura,
-    cintura,
-    idade: idadeFrom(String(r.data_nascimento), todayIso()),
-    imc,
-    rce: calcRce(cintura, altura),
-    classificacaoImc: classificarImc(imc).label,
-    metricas: {
-      flexibilidade: Number(r.flexibilidade),
-      potMMII: Number(r.pot_mmii),
-      potMS: Number(r.pot_ms),
-      velocidade: Number(r.velocidade),
-      agilidade: Number(r.agilidade),
-      abdominal: Number(r.abdominal),
-      resistencia: Number(r.resistencia),
-    },
-    createdAt: String(r.created_at ?? todayIso()),
-  }
-}
-
-function alunoToRow(input: AlunoInput) {
-  const imc = calcImc(input.peso, input.altura)
-  return {
-    nome: input.nome,
-    genero: input.genero,
-    data_nascimento: input.dataNascimento,
-    turma_id: input.turmaId,
-    peso: input.peso,
-    altura: input.altura,
-    cintura: input.cintura,
-    imc,
-    rce: calcRce(input.cintura, input.altura),
-    classificacao_imc: classificarImc(imc).label,
-    flexibilidade: input.metricas.flexibilidade,
-    pot_mmii: input.metricas.potMMII,
-    pot_ms: input.metricas.potMS,
-    velocidade: input.metricas.velocidade,
-    agilidade: input.metricas.agilidade,
-    abdominal: input.metricas.abdominal,
-    resistencia: input.metricas.resistencia,
-  }
-}
-
-function rowToAvaliacao(r: Record<string, unknown>): Avaliacao {
-  return {
-    id: String(r.id),
-    alunoId: String(r.aluno_id),
-    data: String(r.data),
-    mesReferencia: String(r.mes_referencia),
-    anoReferencia: Number(r.ano_referencia),
-    observacoes: (r.observacoes as string | null) ?? null,
-    peso: Number(r.peso),
-    altura: Number(r.altura),
-    cintura: Number(r.cintura),
-    imc: Number(r.imc),
-    rce: Number(r.rce),
-    metricas: {
-      flexibilidade: Number(r.flexibilidade),
-      potMMII: Number(r.pot_mmii),
-      potMS: Number(r.pot_ms),
-      velocidade: Number(r.velocidade),
-      agilidade: Number(r.agilidade),
-      abdominal: Number(r.abdominal),
-      resistencia: Number(r.resistencia),
-    },
-  }
-}
-
-function rowToTurma(r: Record<string, unknown>): Turma {
-  return {
-    id: String(r.id),
-    nome: String(r.nome),
-    anoLetivo: String(r.ano_letivo),
-    professorId: String(r.professor_id),
-    createdAt: String(r.created_at ?? todayIso()),
-  }
-}
+import {
+  alunoToRow,
+  avaliacaoInputToRow,
+  professorToRow,
+  rowToAluno,
+  rowToAvaliacao,
+  rowToProfessor,
+  rowToTurma,
+  rowToUsuario,
+  turmaToRow,
+} from './mappers'
 
 export const supabaseDataSource: DataSource = {
   alunos: {
@@ -169,7 +75,7 @@ export const supabaseDataSource: DataSource = {
     async create(input) {
       const { data, error } = await getSupabase()
         .from('turma')
-        .insert({ nome: input.nome, ano_letivo: input.anoLetivo })
+        .insert(turmaToRow(input))
         .select()
         .single()
       if (error) throw error
@@ -178,7 +84,7 @@ export const supabaseDataSource: DataSource = {
     async update(id, input) {
       const { data, error } = await getSupabase()
         .from('turma')
-        .update({ nome: input.nome, ano_letivo: input.anoLetivo })
+        .update(turmaToRow(input))
         .eq('id', id)
         .select()
         .single()
@@ -216,27 +122,18 @@ export const supabaseDataSource: DataSource = {
       return (data ?? []).map(rowToAvaliacao)
     },
     async create(input: AvaliacaoInput) {
-      const imc = calcImc(input.peso, input.altura)
-      const row = {
-        aluno_id: input.alunoId,
-        data: input.data,
-        mes_referencia: mesPt(input.data),
-        ano_referencia: new Date(input.data).getFullYear(),
-        observacoes: input.observacoes ?? null,
-        peso: input.peso,
-        altura: input.altura,
-        cintura: input.cintura,
-        imc,
-        rce: calcRce(input.cintura, input.altura),
-        flexibilidade: input.metricas.flexibilidade,
-        pot_mmii: input.metricas.potMMII,
-        pot_ms: input.metricas.potMS,
-        velocidade: input.metricas.velocidade,
-        agilidade: input.metricas.agilidade,
-        abdominal: input.metricas.abdominal,
-        resistencia: input.metricas.resistencia,
-      }
+      const row = avaliacaoInputToRow(input)
       const { data, error } = await getSupabase().from('avaliacao').insert(row).select().single()
+      if (error) throw error
+      return rowToAvaliacao(data)
+    },
+    async updateObservacoes(id, observacoes) {
+      const { data, error } = await getSupabase()
+        .from('avaliacao')
+        .update({ observacoes })
+        .eq('id', id)
+        .select()
+        .single()
       if (error) throw error
       return rowToAvaliacao(data)
     },
@@ -246,20 +143,68 @@ export const supabaseDataSource: DataSource = {
     },
   },
 
+  usuarios: {
+    async list() {
+      const { data, error } = await getSupabase().from('usuario').select('*').order('created_at', { ascending: false })
+      if (error) throw error
+      return (data ?? []).map((row) => rowToUsuario(row))
+    },
+    async linkAluno(usuarioId, alunoId) {
+      const { data, error } = await getSupabase()
+        .from('usuario')
+        .update({ aluno_id: alunoId })
+        .eq('id', usuarioId)
+        .select()
+        .single()
+      if (error) throw error
+      return rowToUsuario(data)
+    },
+    async updateNome(usuarioId, nome) {
+      const { data, error } = await getSupabase()
+        .from('usuario')
+        .update({ nome })
+        .eq('id', usuarioId)
+        .select()
+        .single()
+      if (error) throw error
+      return rowToUsuario(data)
+    },
+  },
+
+  professores: {
+    async list() {
+      const { data, error } = await getSupabase().from('professor').select('*').order('nome')
+      if (error) throw error
+      return (data ?? []).map((row) => rowToProfessor(row))
+    },
+    async get(id) {
+      const { data, error } = await getSupabase().from('professor').select('*').eq('id', id).maybeSingle()
+      if (error) throw error
+      return data ? rowToProfessor(data) : null
+    },
+    async update(id, input) {
+      const { data, error } = await getSupabase()
+        .from('professor')
+        .update(professorToRow(input))
+        .eq('id', id)
+        .select()
+        .single()
+      if (error) throw error
+      return rowToProfessor(data)
+    },
+  },
+
   auth: {
     async current() {
       const sb = getSupabase()
       const { data } = await sb.auth.getUser()
       const u = data.user
       if (!u) return null
-      const { data: profile } = await sb.from('usuario').select('*').eq('id', u.id).maybeSingle()
-      return {
-        id: u.id,
-        nome: (profile?.nome as string) ?? u.email ?? 'Usuário',
-        email: u.email ?? '',
-        perfil: ((profile?.perfil as Perfil) ?? 'professor'),
-        alunoId: (profile?.aluno_id as string | null) ?? null,
-      }
+      const { data: profile, error } = await sb.from('usuario').select('*').eq('id', u.id).maybeSingle()
+      if (error) throw error
+      return profile
+        ? rowToUsuario(profile, u.email ?? '')
+        : { id: u.id, nome: u.email ?? 'Usuario', email: u.email ?? '', perfil: 'professor', alunoId: null }
     },
     async signIn(email, password) {
       const sb = getSupabase()
@@ -275,7 +220,18 @@ export const supabaseDataSource: DataSource = {
       if (error) throw error
       const id = data.user?.id
       if (id) {
-        await sb.from('usuario').insert({ id, nome: input.nome, email: input.email, perfil: input.perfil })
+        const usuarioRow = { id, nome: input.nome, email: input.email, perfil: input.perfil, aluno_id: null }
+        const { error: usuarioError } = await sb.from('usuario').insert(usuarioRow)
+        if (usuarioError) throw usuarioError
+
+        if (input.perfil === 'professor') {
+          const { error: professorError } = await sb.from('professor').insert({
+            id,
+            nome: input.nome,
+            email: input.email,
+          })
+          if (professorError) throw professorError
+        }
       }
       const user: Usuario = { id: id ?? 'unknown', nome: input.nome, email: input.email, perfil: input.perfil }
       return user

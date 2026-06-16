@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { Activity, Ruler, Gauge, ChevronDown } from 'lucide-react'
+import { Activity, Ruler, Gauge, ChevronDown, Lightbulb } from 'lucide-react'
 import { Topbar } from '@/components/layout/Topbar'
 import {
   Card,
@@ -20,6 +20,9 @@ import { data } from '@/data'
 import { useAsync } from '@/hooks/useAsync'
 import { useAuthStore } from '@/stores/authStore'
 import { fmtNum, fmtMonthShort } from '@/lib/format'
+import { buildAlunoFocus } from '@/features/insights/insights'
+
+const todayIso = () => new Date().toISOString().slice(0, 10)
 
 export function AlunoOverview() {
   const user = useAuthStore((s) => s.user)
@@ -28,11 +31,12 @@ export function AlunoOverview() {
 
   const { data: result, loading, error, reload } = useAsync(async () => {
     if (!alunoId) return null
-    const [aluno, evolution] = await Promise.all([
+    const [aluno, evolution, avaliacoes] = await Promise.all([
       data.alunos.get(alunoId),
       data.alunos.evolution(alunoId),
+      data.avaliacoes.listByAluno(alunoId),
     ])
-    return { aluno, evolution }
+    return { aluno, evolution, avaliacoes }
   }, [alunoId])
 
   const evoData = useMemo(() => {
@@ -44,6 +48,7 @@ export function AlunoOverview() {
   }, [result, metric])
 
   const evoLabel = metric === 'imc' ? 'IMC' : METRICA_BY_KEY[metric].label
+  const focus = result?.aluno ? buildAlunoFocus(result.aluno, result.avaliacoes ?? [], todayIso()) : null
 
   return (
     <>
@@ -99,6 +104,26 @@ export function AlunoOverview() {
                     <MiniStat key={m.key} label={m.short} value={fmtNum(aluno.metricas[m.key], 1)} unit={m.unit} />
                   ))}
                 </div>
+
+                {focus && (
+                  <Card>
+                    <CardHeader
+                      title="Proximos focos"
+                      subtitle={focus.subtitle}
+                      icon={<Lightbulb className="h-5 w-5" />}
+                      action={<Badge tone={focus.items[0]?.tone ?? 'neutral'}>{focus.title}</Badge>}
+                    />
+                    <div className="grid grid-cols-1 gap-3 px-5 pb-5 lg:grid-cols-3">
+                      {focus.items.map((item) => (
+                        <div key={item.id} className="rounded-[var(--radius-md)] border border-line bg-elevated/50 p-4">
+                          <Badge tone={item.tone}>{item.metric ? METRICA_BY_KEY[item.metric].short : 'Foco'}</Badge>
+                          <p className="mt-3 font-semibold text-ink">{item.label}</p>
+                          <p className="mt-1 text-sm text-subtle">{item.description}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </Card>
+                )}
 
                 <Card>
                   <CardHeader

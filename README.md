@@ -64,11 +64,10 @@ A solução foca na visualização de dados do aluno a longo prazo, através de 
 
 3. Configure as variáveis de ambiente — crie um arquivo `.env` na raiz com:
    ```env
-   VITE_DATA_SOURCE=supabase
    VITE_SUPABASE_URL=https://soeyfmnjuispbryslwiq.supabase.co
    VITE_SUPABASE_ANON_KEY=<anon_key>
    ```
-   > Para rodar sem internet (modo offline), omita `VITE_DATA_SOURCE` ou defina como `mock`.
+   > O frontend usa apenas o banco real do Supabase. As variáveis acima são obrigatórias para autenticação e acesso aos dados.
 
 4. Execute o projeto:
    ```bash
@@ -95,13 +94,7 @@ O sistema possui três perfis com permissões distintas, controladas por Row Lev
 | **Aluno** | Visualiza apenas sua própria evolução e avaliações |
 | **Admin** | Acesso total a todos os dados do sistema |
 
-### Contas de demonstração
-
-| Email | Senha | Perfil |
-|---|---|---|
-| `professor@fleximetrics.app` | `demo1234` | Professor |
-| `aluno@fleximetrics.app` | `demo1234` | Aluno (Lucas Ferreira) |
-| `admin@fleximetrics.app` | `demo1234` | Administrador |
+As contas de acesso devem existir no Supabase Auth e possuir um registro correspondente na tabela `usuario`.
 
 ---
 
@@ -117,26 +110,19 @@ aluno        — dados físicos e métricas de cada aluno
 avaliacao    — avaliações mensais com histórico de evolução
 ```
 
-O banco está pré-populado com dados de demonstração: 3 turmas, 12 alunos e 36 avaliações (Março, Abril e Maio de 2026) exibindo evolução progressiva das métricas.
-
 ### Fonte de dados
 
-O sistema suporta dois modos de operação definidos pela variável `VITE_DATA_SOURCE`:
-
-| Valor | Comportamento |
-|---|---|
-| `supabase` | Usa o banco PostgreSQL real via Supabase |
-| `mock` (padrão) | Usa adaptador em memória + `localStorage`, sem necessidade de rede |
+O sistema utiliza exclusivamente o PostgreSQL real via Supabase. O adaptador mock e o gerador de dados falsos foram removidos do frontend para evitar divergência entre código, schema e regras de acesso.
 
 ---
 
 ## Ajustes Realizados a Partir de Feedbacks (Segunda Menção)
 
-- **Integração Supabase ativada:** O adapter de produção foi conectado ao banco PostgreSQL real, com schema alinhado ao modelo de domínio do frontend e RLS configurado por perfil de usuário.
+- **Integração Supabase ativada:** O adapter de produção foi conectado ao banco PostgreSQL real, com schema alinhado ao modelo de domínio do frontend.
 
-- **Row Level Security (RLS):** Implementação completa de políticas de segurança — professores acessam apenas seus próprios alunos, alunos visualizam somente seus dados, administradores têm visibilidade total.
+- **Row Level Security (RLS):** As permissões por perfil devem ser mantidas no projeto Supabase, usando os vínculos entre `auth.users`, `usuario`, `turma`, `aluno` e `avaliacao`.
 
-- **Mock Adapter mantido:** O adaptador offline (`src/data/adapters/mock`) permanece funcional para demonstrações sem dependência de rede, ativado simplesmente omitindo `VITE_DATA_SOURCE`.
+- **Mock Adapter removido:** O frontend não possui mais modo offline com dados falsos; toda leitura e escrita passa pelo Supabase.
 
 - **Revisão da Interface (Performance Lab):** Refinamento do layout em modo escuro utilizando Tailwind CSS v4, melhorando o contraste e usabilidade dos gráficos e do painel de ranqueamento.
 
